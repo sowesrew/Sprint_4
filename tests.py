@@ -46,4 +46,51 @@ class TestBooksCollector:
         collector.set_book_genre(name_2, 'Детективы')
         assert len(collector.get_books_with_specific_genre('Фантастика')) == 1
 
-    def test_get_books_genre_
+    def test_get_books_genre_books_displayed_in_dictionary(self):
+        collector = BooksCollector()
+        name_1 = 'Приключения Алисы в стране чудес'
+        name_2 = 'Робинзон Крузо'
+        collector.add_new_book(name_1)
+        collector.add_new_book(name_2)
+        collector.set_book_genre(name_1, 'Мультфильмы')
+        collector.set_book_genre(name_2, 'Детективы')
+        assert len(collector.get_books_genre()) == 2
+
+    def test_get_books_for_children_books_with_age_genre_not_included_in_list(self):
+        collector = BooksCollector()
+        name_1 = 'Маленький принц'
+        name_2 = 'Заводной апельсин'
+        collector.add_new_book(name_1)
+        collector.add_new_book(name_2)
+        collector.set_book_genre(name_1, 'Мультфильмы')
+        collector.set_book_genre(name_2, 'Ужасы')
+        assert collector.get_books_for_children()[0] == name_1
+
+    def test_add_book_in_favorites_book_added_in_favorites(self):
+        collector = BooksCollector()
+        name = 'Гарри Поттер'
+        collector.add_new_book(name)
+        collector.set_book_genre(name, 'Мультфильмы')
+        collector.add_book_in_favorites(name)
+        assert collector.favorites == [name]
+
+    def test_delete_book_from_favorites_book_deleted_from_favorites(self):
+        collector = BooksCollector()
+        name = 'Евгений Онегин'
+        collector.add_new_book(name)
+        collector.set_book_genre(name, 'Детективы')
+        collector.add_book_in_favorites(name)
+        collector.delete_book_from_favorites(name)
+        assert len(collector.favorites) == 0
+
+    def test_get_list_of_favorites_books_favorites_book_in_list(self):
+        collector = BooksCollector()
+        name_1 = 'Облачный атлас'
+        name_2 = 'Марсианин'
+        collector.add_new_book(name_1)
+        collector.add_new_book(name_2)
+        collector.set_book_genre(name_1, 'Фантастика')
+        collector.set_book_genre(name_2, 'Фантастика')
+        collector.add_book_in_favorites(name_1)
+        collector.add_book_in_favorites(name_2)
+        assert collector.get_list_of_favorites_books() == [name_1, name_2]
